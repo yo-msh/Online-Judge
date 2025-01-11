@@ -1,0 +1,93 @@
+---
+import { API_ENDPOINTS } from "@/helpers/consts";
+import FormLayout from "@/layouts/FormLayout.astro";
+
+if (Astro.cookies.get("token")) {
+	return Astro.redirect("/");
+}
+
+const api = API_ENDPOINTS.REGISTER;
+---
+
+<FormLayout
+	title="Register"
+	description="Sign up and become 100% more awesome. Guaranteed!"
+>
+	<form class="card-body" id="register-form" data-api={api}>
+		<div class="form-control">
+			<label class="label">
+				<span class="label-text">Email</span>
+			</label>
+			<input
+				type="email"
+				name="email"
+				placeholder="email"
+				class="input input-bordered"
+				required
+			/>
+		</div>
+		<div class="form-control">
+			<label class="label">
+				<span class="label-text">Name</span>
+			</label>
+			<input
+				type="text"
+				name="name"
+				placeholder="name"
+				class="input input-bordered"
+				required
+			/>
+		</div>
+		<div class="form-control">
+			<label class="label">
+				<span class="label-text">Password</span>
+			</label>
+			<input
+				type="password"
+				name="password"
+				placeholder="password"
+				class="input input-bordered"
+				required
+			/>
+			<label class="label">
+				<a href="#" class="label-text-alt link link-hover"
+					>Forgot password?</a
+				>
+			</label>
+		</div>
+		<div class="form-control mt-6">
+			<button class="btn btn-primary" type="submit">Sign Up</button>
+		</div>
+		<div class="form-control mt-6">
+			<a class="btn btn-outline btn-primary" href="/login/">Sign In</a>
+		</div>
+	</form>
+</FormLayout>
+
+<script>
+	const form = document.getElementById("register-form") as HTMLFormElement;
+	const api = form.dataset.api as string;
+
+	form.addEventListener("submit", async (e: Event) => {
+		e.preventDefault();
+		const formData = new FormData(form);
+		const formDataObject = Object.fromEntries(formData.entries());
+
+		const response = await fetch(api, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(formDataObject),
+		});
+
+		const data = await response.json();
+
+		if (response.ok) {
+			window.location.href = "/login/";
+			alert("Registration successful. Please login");
+		} else {
+			alert("Registration failed. Please try again.\n" + data.error);
+		}
+	});
+</script>

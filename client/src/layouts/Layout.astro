@@ -1,0 +1,19 @@
+---
+import Footer from "@/components/layout/Footer.astro";
+import Header from "@/components/layout/Header.astro";
+import Base from "@/layouts/Base.astro";
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<Base title={title}>
+	<Header />
+	<main class="w-screen min-h-screen flex justify-center p-4">
+		<slot />
+	</main>
+	<Footer />
+</Base>

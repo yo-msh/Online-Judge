@@ -1,0 +1,19 @@
+---
+interface Props {
+	title: string;
+	description: string;
+	id: number;
+}
+
+const { title, description, id } = Astro.props;
+---
+
+<div class="card bg-base-200 shadow-xl">
+	<div class="card-body">
+		<h2 class="card-title">{title}</h2>
+		<p>{description}</p>
+		<div class="card-actions justify-end">
+			<a class="btn btn-primary" href=`/problem/${id}`>Solve</a>
+		</div>
+	</div>
+</div>

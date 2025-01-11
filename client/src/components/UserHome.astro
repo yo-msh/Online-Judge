@@ -1,0 +1,11 @@
+---
+import ProblemCards from "./ProblemCards.astro";
+---
+
+<article class="prose w-full">
+	<p>Good day</p>
+	<h1>Problems</h1>
+	<ProblemCards server:defer>
+		<p slot="fallback">...</p>
+	</ProblemCards>
+</article>

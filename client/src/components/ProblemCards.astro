@@ -1,0 +1,32 @@
+---
+import { API_ENDPOINTS } from "@/helpers/consts";
+import ProblemCard from "./partials/ProblemCard.astro";
+
+type Problem = {
+	id: number;
+	title: string;
+	description: string;
+};
+
+let problems: Problem[] = [];
+
+try {
+	problems = await fetch(API_ENDPOINTS.PROBLEMS).then((res) => res.json());
+	// console.log(problems);
+} catch (error) {
+	// console.error(error);
+	return "Error fetching problems";
+}
+---
+
+<div class="grid gap-4 grid-cols-1 md:grid-cols-2">
+	{
+		problems.map((problem) => (
+			<ProblemCard
+				title={problem.title}
+				description={problem.description}
+				id={problem.id}
+			/>
+		))
+	}
+</div>

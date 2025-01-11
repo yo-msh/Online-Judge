@@ -1,0 +1,80 @@
+---
+import Base from "@/layouts/Base.astro";
+import { API_ENDPOINTS } from "@/helpers/consts";
+import Editor from "@/components/Editor.astro";
+const { id } = Astro.params;
+
+type Problem = {
+	id: number;
+	title: string;
+	description: string;
+	constraints: string;
+	sample_input: string;
+	sample_output: string;
+};
+
+let problem: Problem;
+
+try {
+	// const res = await fetch(`${API_ENDPOINTS.PROBLEM}/${id}`);
+	const res = await fetch(`http://localhost:5000/problems/${id}`);
+	problem = await res.json();
+} catch (error) {
+	console.error(error);
+	return Astro.redirect("/404");
+}
+
+console.log(problem);
+const { title, description, constraints, sample_input, sample_output } =
+	problem;
+
+// dummy data
+// const title = "Count Vowels in String";
+// const description =
+// 	"Write a program to count the number of vowels in a string.";
+// const constraints = "1 ≤ length of S ≤ 100";
+// const sample_input = "education";
+// const sample_output = "5";
+---
+
+<Base title="Problem">
+	<header class="h-[10vh] bg-base-100 flex justify-center items-center">
+		<h1 class="text-xl">Problem {id}</h1>
+	</header>
+	<main class="h-[90vh] grid grid-cols-2">
+		<div id="left" class="p-4">
+			<h1 id="title" class="text-2xl py-2">
+				{title}
+			</h1>
+			<p id="description">
+				{description}
+			</p>
+
+			<br />
+
+			<h2 class="text-xl py-1">Constraints</h2>
+			<p>{constraints}</p>
+
+			<br />
+
+			<h2 class="text-xl py-1">Sample Input</h2>
+			<div class="mockup-code">
+				<pre
+					data-prefix=""
+					class="text-warning"><code>{sample_input}</code>
+				</pre>
+			</div>
+
+			<br />
+			<h2 class="text-xl py-1">Sample Output</h2>
+			<div class="mockup-code">
+				<pre
+					data-prefix=""
+					class="text-success"><code>{sample_output}</code></pre>
+			</div>
+		</div>
+		<div id="right">
+			<Editor />
+		</div>
+	</main>
+</Base>

@@ -1,0 +1,9 @@
+---
+import Home from "@/components/Home.astro";
+import UserHome from "@/components/UserHome.astro";
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout title="Home Page">
+	{Astro.cookies.has("token") ? <UserHome /> : <Home />}
+</Layout>

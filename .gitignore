@@ -1,0 +1,18 @@
+# Ignore node_modules folders in all subdirectories
+node_modules/
+
+# Ignore the frontend folder
+frontend/
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+
+# Ignore environment files
+.env
+
+# Ignore dist or build folders
+dist/
+build/

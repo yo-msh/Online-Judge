@@ -1,0 +1,84 @@
+---
+import { API_ENDPOINTS } from "@/helpers/consts";
+import FormLayout from "@/layouts/FormLayout.astro";
+
+if (Astro.cookies.get("token")) {
+	return Astro.redirect("/");
+}
+
+const api = API_ENDPOINTS.LOGIN;
+---
+
+<FormLayout
+	title="Login"
+	description="Welcome back, secret agent. Your mission, should you choose to accept it, is to remember your password."
+>
+	<form class="card-body" id="login-form" data-api={api}>
+		<div class="form-control">
+			<label class="label">
+				<span class="label-text">Email</span>
+			</label>
+			<input
+				type="email"
+				placeholder="email"
+				name="email"
+				class="input input-bordered"
+				required
+			/>
+		</div>
+		<div class="form-control">
+			<label class="label">
+				<span class="label-text">Password</span>
+			</label>
+			<input
+				type="password"
+				placeholder="password"
+				name="password"
+				class="input input-bordered"
+				required
+			/>
+			<label class="label">
+				<a href="#" class="label-text-alt link link-hover"
+					>Forgot password?</a
+				>
+			</label>
+		</div>
+		<div class="form-control mt-6">
+			<button class="btn btn-primary" id="login-btn" type="submit"
+				>Login</button
+			>
+		</div>
+		<div class="form-control mt-6">
+			<a class="btn btn-outline btn-primary" href="/register/">Sign Up</a>
+		</div>
+	</form>
+</FormLayout>
+
+<script>
+	const form = document.getElementById("login-form") as HTMLFormElement;
+	const api = form.dataset.api as string;
+
+	form.addEventListener("submit", async (e: Event) => {
+		e.preventDefault();
+		const formData = new FormData(form);
+		const formDataObject = Object.fromEntries(formData.entries());
+
+		const response = await fetch(api, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(formDataObject),
+		});
+
+		const data = await response.json();
+
+		if (response.ok) {
+			document.cookie = `token=${data.token}; path=/;`;
+			window.location.href = "/";
+			alert("Login successful");
+		} else {
+			alert("Invalid email or password");
+		}
+	});
+</script>
